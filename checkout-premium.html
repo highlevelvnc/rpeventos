@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscrição - Corrida do SIM | RP EVENTOS</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --black: #000000;
+            --white: #ffffff;
+            --gray-dark: #1a1a1a;
+            --gray-mid: #333333;
+            --gray-light: #666666;
+            --gray-border: #2a2a2a;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;900&display=swap');
+
+        body {
+            background: var(--black);
+            color: var(--white);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .display {
+            font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+        }
+
+        /* HEADER MINIMAL */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 2rem 4rem;
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--gray-border);
+        }
+
+        .logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 0.15em;
+        }
+
+        /* CHECKOUT LAYOUT */
+        .checkout-container {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            min-height: calc(100vh - 100px);
+        }
+
+        /* LEFT SIDE - EVENT INFO */
+        .event-info {
+            position: relative;
+            background: var(--gray-dark);
+            overflow: hidden;
+        }
+
+        .event-hero {
+            position: relative;
+            height: 60vh;
+            background: url('https://images.unsplash.com/photo-1513593771513-7b58b6c4af38?w=1200&q=90') center/cover;
+            filter: grayscale(100%);
+        }
+
+        .event-hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.9) 100%);
+        }
+
+        .event-details {
+            position: relative;
+            padding: 3rem;
+            margin-top: -8rem;
+            z-index: 10;
+        }
+
+        .event-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: var(--white);
+            color: var(--black);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 2rem;
+        }
+
+        .event-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            line-height: 0.95;
+            margin-bottom: 2rem;
+        }
+
+        .event-meta-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            padding-bottom: 3rem;
+            border-bottom: 1px solid var(--gray-border);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .meta-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gray-mid);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .event-description {
+            font-size: 1rem;
+            line-height: 1.7;
+            opacity: 0.8;
+        }
+
+        /* RIGHT SIDE - FORM */
+        .checkout-form {
+            background: var(--black);
+            padding: 4rem;
+            border-left: 1px solid var(--gray-border);
+            overflow-y: auto;
+            max-height: calc(100vh - 100px);
+        }
+
+        .form-section {
+            margin-bottom: 4rem;
+        }
+
+        .form-section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--gray-border);
+        }
+
+        /* KIT SELECTION */
+        .kit-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .kit-option {
+            position: relative;
+            padding: 2rem;
+            border: 2px solid var(--gray-border);
+            background: var(--gray-dark);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .kit-option:hover {
+            border-color: var(--gray-mid);
+            transform: translateX(4px);
+        }
+
+        .kit-option.selected {
+            border-color: var(--white);
+            background: var(--gray-mid);
+        }
+
+        .kit-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .kit-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .kit-price {
+            font-size: 1.75rem;
+            font-weight: 900;
+        }
+
+        .kit-items {
+            font-size: 0.875rem;
+            line-height: 1.8;
+            opacity: 0.7;
+        }
+
+        .kit-items li {
+            list-style: none;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .kit-items li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            opacity: 0.5;
+        }
+
+        /* INPUT FIELDS */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.75rem;
+            opacity: 0.6;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem;
+            background: var(--gray-dark);
+            border: 1px solid var(--gray-border);
+            color: var(--white);
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--white);
+            background: var(--gray-mid);
+        }
+
+        .form-input::placeholder {
+            color: var(--gray-light);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* COUPON */
+        .coupon-input-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .coupon-input-group input {
+            flex: 1;
+        }
+
+        .btn-apply {
+            padding: 1rem 2rem;
+            background: var(--gray-mid);
+            color: var(--white);
+            border: 1px solid var(--gray-border);
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-apply:hover {
+            background: var(--white);
+            color: var(--black);
+            border-color: var(--white);
+        }
+
+        .coupon-success {
+            margin-top: 0.5rem;
+            padding: 0.75rem;
+            background: rgba(0,255,0,0.1);
+            border: 1px solid rgba(0,255,0,0.3);
+            font-size: 0.875rem;
+            color: #00ff00;
+        }
+
+        /* SUMMARY STICKY */
+        .summary {
+            position: sticky;
+            top: 2rem;
+            padding: 2rem;
+            background: var(--gray-dark);
+            border: 1px solid var(--gray-border);
+            margin-bottom: 2rem;
+        }
+
+        .summary-title {
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1.5rem;
+        }
+
+        .summary-line {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--gray-border);
+        }
+
+        .summary-line.total {
+            border: none;
+            padding-top: 1.5rem;
+            margin-top: 1rem;
+            font-size: 1.5rem;
+            font-weight: 900;
+        }
+
+        .summary-label {
+            font-size: 0.875rem;
+            opacity: 0.7;
+        }
+
+        .summary-value {
+            font-weight: 600;
+        }
+
+        .summary-value.discount {
+            color: #00ff00;
+        }
+
+        /* PAYMENT METHOD */
+        .payment-methods {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .payment-option {
+            padding: 1.5rem;
+            border: 2px solid var(--gray-border);
+            background: var(--gray-dark);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .payment-option:hover {
+            border-color: var(--gray-mid);
+        }
+
+        .payment-option.selected {
+            border-color: var(--white);
+            background: var(--gray-mid);
+        }
+
+        .payment-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .payment-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .payment-discount {
+            font-size: 0.75rem;
+            color: #00ff00;
+            margin-top: 0.25rem;
+        }
+
+        /* CHECKBOX */
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: var(--gray-dark);
+            border: 1px solid var(--gray-border);
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-top: 0.25rem;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .checkbox-label {
+            font-size: 0.875rem;
+            line-height: 1.6;
+            opacity: 0.8;
+        }
+
+        /* SUBMIT BUTTON */
+        .btn-submit {
+            width: 100%;
+            padding: 1.75rem;
+            background: var(--white);
+            color: var(--black);
+            border: none;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 2rem;
+        }
+
+        .btn-submit:hover {
+            background: var(--gray-light);
+            transform: translateY(-2px);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .checkout-container {
+                grid-template-columns: 1fr;
+            }
+
+            .event-info {
+                position: relative;
+            }
+
+            .checkout-form {
+                border-left: none;
+                border-top: 1px solid var(--gray-border);
+                max-height: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header,
+            .event-details,
+            .checkout-form {
+                padding: 2rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .payment-methods {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">RP EVENTOS</div>
+    </div>
+
+    <!-- Checkout Container -->
+    <div class="checkout-container">
+        <!-- Left Side - Event Info -->
+        <div class="event-info">
+            <div class="event-hero"></div>
+            <div class="event-details">
+                <div class="event-badge">Inscrições Abertas</div>
+                <h1 class="display event-title">CORRIDA DO SIM<br>IGUABA GRANDE</h1>
+                
+                <div class="event-meta-list">
+                    <div class="meta-item">
+                        <div class="meta-icon">📍</div>
+                        <div>
+                            <div style="font-weight: 600;">Mirante Dona Célia</div>
+                            <div style="font-size: 0.875rem; opacity: 0.6;">Iguaba Grande, RJ</div>
+                        </div>
+                    </div>
+                    
+                    <div class="meta-item">
+                        <div class="meta-icon">📅</div>
+                        <div>
+                            <div style="font-weight: 600;">15 de Junho, 2026</div>
+                            <div style="font-size: 0.875rem; opacity: 0.6;">Largada às 19h00</div>
+                        </div>
+                    </div>
+                    
+                    <div class="meta-item">
+                        <div class="meta-icon">🌙</div>
+                        <div>
+                            <div style="font-weight: 600;">Corrida Noturna</div>
+                            <div style="font-size: 0.875rem; opacity: 0.6;">5km e 10km</div>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="event-description">
+                    Vamos juntos correr pelos 31 anos de histórias e conquistas de Iguaba Grande. 
+                    Uma corrida especial, noturna, cheia de energia e celebração. Experiência única 
+                    com cronometragem profissional, medalha exclusiva e estrutura completa de apoio.
+                </p>
+            </div>
+        </div>
+
+        <!-- Right Side - Form -->
+        <div class="checkout-form">
+            <form id="checkoutForm">
+                <!-- Kit Selection -->
+                <div class="form-section">
+                    <h2 class="form-section-title">1. Escolha seu Kit</h2>
+                    <div class="kit-options">
+                        <div class="kit-option" data-kit="lua" data-price="109.99">
+                            <div class="kit-header">
+                                <div class="kit-name">Kit Lua</div>
+                                <div class="kit-price">R$ 109,99</div>
+                            </div>
+                            <ul class="kit-items">
+                                <li>Camisa oficial do evento</li>
+                                <li>Chip de cronometragem</li>
+                                <li>Número de peito</li>
+                                <li>Medalha pós-prova</li>
+                                <li>Hidratação intra e pós-prova</li>
+                            </ul>
+                        </div>
+
+                        <div class="kit-option" data-kit="estrela" data-price="79.99">
+                            <div class="kit-header">
+                                <div class="kit-name">Kit Estrela</div>
+                                <div class="kit-price">R$ 79,99</div>
+                            </div>
+                            <ul class="kit-items">
+                                <li>Chip de cronometragem</li>
+                                <li>Número de peito</li>
+                                <li>Medalha pós-prova</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Personal Data -->
+                <div class="form-section">
+                    <h2 class="form-section-title">2. Seus Dados</h2>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Nome Completo</label>
+                        <input type="text" class="form-input" placeholder="Digite seu nome completo" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-input" placeholder="seu@email.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Telefone</label>
+                            <input type="tel" class="form-input" placeholder="(22) 98888-8888" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">CPF</label>
+                            <input type="text" class="form-input" placeholder="000.000.000-00" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Data de Nascimento</label>
+                            <input type="date" class="form-input" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Cidade</label>
+                        <input type="text" class="form-input" placeholder="Sua cidade" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Equipe (Opcional)</label>
+                        <input type="text" class="form-input" placeholder="Nome da sua equipe">
+                    </div>
+                </div>
+
+                <!-- Coupon -->
+                <div class="form-section">
+                    <h2 class="form-section-title">3. Cupom de Desconto</h2>
+                    <div class="form-group">
+                        <div class="coupon-input-group">
+                            <input type="text" class="form-input" placeholder="CÓDIGO DO CUPOM" id="couponInput">
+                            <button type="button" class="btn-apply">Aplicar</button>
+                        </div>
+                        <div class="coupon-success" id="couponSuccess" style="display: none;">
+                            ✓ Cupom aplicado com sucesso!
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Method -->
+                <div class="form-section">
+                    <h2 class="form-section-title">4. Forma de Pagamento</h2>
+                    <div class="payment-methods">
+                        <div class="payment-option" data-method="pix">
+                            <div class="payment-icon">📱</div>
+                            <div class="payment-label">PIX</div>
+                            <div class="payment-discount">Desconto de R$ 3,00</div>
+                        </div>
+                        <div class="payment-option" data-method="card">
+                            <div class="payment-icon">💳</div>
+                            <div class="payment-label">Cartão</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary -->
+                <div class="summary">
+                    <div class="summary-title">Resumo do Pedido</div>
+                    <div class="summary-line">
+                        <span class="summary-label">Kit selecionado</span>
+                        <span class="summary-value" id="summaryKit">—</span>
+                    </div>
+                    <div class="summary-line">
+                        <span class="summary-label">Taxa de serviço</span>
+                        <span class="summary-value">R$ 5,00</span>
+                    </div>
+                    <div class="summary-line" id="couponLine" style="display: none;">
+                        <span class="summary-label">Desconto cupom</span>
+                        <span class="summary-value discount" id="couponDiscount">—</span>
+                    </div>
+                    <div class="summary-line" id="pixLine" style="display: none;">
+                        <span class="summary-label">Desconto PIX</span>
+                        <span class="summary-value discount">-R$ 3,00</span>
+                    </div>
+                    <div class="summary-line total">
+                        <span>Total</span>
+                        <span id="summaryTotal">R$ 0,00</span>
+                    </div>
+                </div>
+
+                <!-- Terms -->
+                <div class="checkbox-group">
+                    <input type="checkbox" id="terms" required>
+                    <label class="checkbox-label" for="terms">
+                        Li e aceito os termos e condições do evento, regulamento da prova e 
+                        políticas de cancelamento. Declaro estar ciente dos riscos inerentes 
+                        à prática esportiva.
+                    </label>
+                </div>
+
+                <!-- Submit -->
+                <button type="submit" class="btn-submit">FINALIZAR INSCRIÇÃO</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // State
+        let selectedKit = null;
+        let selectedPayment = null;
+        let couponApplied = false;
+        let couponValue = 0;
+
+        // Kit Selection
+        document.querySelectorAll('.kit-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.kit-option').forEach(o => o.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedKit = {
+                    name: this.dataset.kit,
+                    price: parseFloat(this.dataset.price)
+                };
+                updateSummary();
+            });
+        });
+
+        // Payment Method Selection
+        document.querySelectorAll('.payment-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedPayment = this.dataset.method;
+                updateSummary();
+            });
+        });
+
+        // Coupon
+        document.querySelector('.btn-apply').addEventListener('click', function() {
+            const couponInput = document.getElementById('couponInput');
+            const couponCode = couponInput.value.toUpperCase();
+            
+            // Simulação de validação de cupom
+            if (couponCode === 'IGUABA10') {
+                couponApplied = true;
+                couponValue = selectedKit ? selectedKit.price * 0.1 : 0;
+                document.getElementById('couponSuccess').style.display = 'block';
+                updateSummary();
+            } else if (couponCode) {
+                alert('Cupom inválido');
+            }
+        });
+
+        // Update Summary
+        function updateSummary() {
+            const summaryKit = document.getElementById('summaryKit');
+            const summaryTotal = document.getElementById('summaryTotal');
+            const pixLine = document.getElementById('pixLine');
+            const couponLine = document.getElementById('couponLine');
+
+            if (!selectedKit) {
+                summaryKit.textContent = '—';
+                summaryTotal.textContent = 'R$ 0,00';
+                return;
+            }
+
+            summaryKit.textContent = `Kit ${selectedKit.name.charAt(0).toUpperCase() + selectedKit.name.slice(1)} - R$ ${selectedKit.price.toFixed(2)}`;
+
+            let total = selectedKit.price + 5.00; // Kit + Taxa
+
+            // Apply coupon
+            if (couponApplied) {
+                total -= couponValue;
+                couponLine.style.display = 'flex';
+                document.getElementById('couponDiscount').textContent = `-R$ ${couponValue.toFixed(2)}`;
+            } else {
+                couponLine.style.display = 'none';
+            }
+
+            // Apply PIX discount
+            if (selectedPayment === 'pix') {
+                total -= 3.00;
+                pixLine.style.display = 'flex';
+            } else {
+                pixLine.style.display = 'none';
+            }
+
+            // Minimum R$ 5,00
+            total = Math.max(total, 5.00);
+
+            summaryTotal.textContent = `R$ ${total.toFixed(2)}`;
+        }
+
+        // Form Submit
+        document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!selectedKit) {
+                alert('Selecione um kit');
+                return;
+            }
+
+            if (!selectedPayment) {
+                alert('Selecione uma forma de pagamento');
+                return;
+            }
+
+            alert('Redirecionando para pagamento...');
+            // Aqui integraria com Stripe
+        });
+    </script>
+</body>
+</html>

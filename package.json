@@ -1,0 +1,16 @@
+{
+  "name": "rp-eventos-desportivos",
+  "version": "2.0.0",
+  "description": "Site oficial RP Eventos Desportivos - rpeventosdesportivos.com.br",
+  "scripts": {
+    "dev": "serve .",
+    "build": "echo 'Static site ready'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/highlevelvnc/rpeventos.git"
+  },
+  "keywords": ["corrida", "eventos", "esportivos", "iguaba-grande"],
+  "author": "RP Eventos Desportivos",
+  "license": "MIT"
+}

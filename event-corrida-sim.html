@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corrida do SIM - 14 de Março 2026 | RP EVENTOS</title>
+    <meta name="description" content="Corrida noturna no Mirante Dona Célia. 3km Caminhada e 5km Corrida. Troféu, medalha e camisa exclusiva. Inscreva-se!">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --black: #000000; --white: #ffffff; --gray-dark: #1a1a1a; --gray-mid: #333333; --orange: #ff6b35; }
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;900&display=swap');
+        
+        body {
+            background: var(--black);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .display { font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.03em; text-transform: uppercase; }
+        
+        header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            padding: 2rem 4rem; display: flex; justify-content: space-between; align-items: center;
+            background: rgba(0,0,0,0.95); backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1); transition: all 0.3s ease;
+        }
+        
+        header.transparent { background: transparent; border-bottom: none; }
+        
+        .logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 0.15em; }
+        .logo a { color: var(--white); text-decoration: none; }
+        
+        .floating-cta {
+            position: fixed; bottom: 2rem; right: 2rem; z-index: 1000;
+            opacity: 0; transform: translateY(100px); transition: all 0.6s ease;
+        }
+        .floating-cta.visible { opacity: 1; transform: translateY(0); }
+        
+        .btn-float {
+            display: block; padding: 1.5rem 3rem; background: var(--orange);
+            color: var(--white); text-decoration: none; font-weight: 700;
+            font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.15em;
+            box-shadow: 0 10px 40px rgba(255,107,53,0.3); transition: all 0.3s ease;
+        }
+        .btn-float:hover { transform: translateY(-4px); box-shadow: 0 15px 60px rgba(255,107,53,0.5); }
+        
+        .hero-full {
+            position: relative; height: 100vh; display: flex; align-items: center;
+            justify-content: center; overflow: hidden;
+        }
+        
+        .hero-bg {
+            position: absolute; inset: 0;
+            background: url('https://github.com/highlevelvnc/rpeventos/raw/main/uploads/mirante.webp') center/cover;
+            filter: grayscale(100%);
+        }
+        
+        .hero-bg::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.9) 100%);
+        }
+        
+        .hero-content { position: relative; z-index: 10; text-align: center; max-width: 1200px; padding: 0 2rem; }
+        .hero-badge {
+            display: inline-block; padding: 0.75rem 2rem; background: var(--orange);
+            color: var(--white); font-size: 0.75rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 3rem;
+        }
+        .hero-title { font-size: clamp(4rem, 12vw, 10rem); line-height: 0.9; margin-bottom: 2rem; }
+        .hero-subtitle { font-size: clamp(1.25rem, 3vw, 2rem); font-weight: 300; opacity: 0.8; }
+        
+        .scroll-section {
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            padding: 8rem 4rem; position: relative;
+        }
+        .scroll-section.dark { background: var(--black); }
+        .scroll-section.image {
+            background-size: cover; background-position: center; background-attachment: fixed;
+        }
+        .scroll-section.image::after {
+            content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.75);
+        }
+        
+        .section-content { position: relative; z-index: 10; max-width: 1000px; text-align: center; }
+        .section-number { font-size: 1rem; font-weight: 700; opacity: 0.4; margin-bottom: 2rem; letter-spacing: 0.2em; }
+        .section-title { font-size: clamp(3rem, 8vw, 7rem); line-height: 1; margin-bottom: 3rem; }
+        .section-text { font-size: clamp(1.125rem, 2vw, 1.5rem); line-height: 1.8; font-weight: 300; opacity: 0.8; }
+        
+        /* REWARDS SECTION */
+        .rewards-section {
+            padding: 10rem 4rem; background: var(--gray-dark);
+            position: relative; overflow: hidden;
+        }
+        
+        .rewards-section::before {
+            content: ''; position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%); width: 800px; height: 800px;
+            background: radial-gradient(circle, rgba(255,107,53,0.05) 0%, transparent 70%);
+        }
+        
+        .rewards-header {
+            text-align: center; margin-bottom: 6rem; position: relative; z-index: 10;
+        }
+        
+        .rewards-title { font-size: clamp(3rem, 8vw, 6rem); margin-bottom: 1rem; }
+        
+        .rewards-subtitle {
+            font-size: 1.25rem; opacity: 0.6; font-weight: 300;
+            margin-top: 1rem; letter-spacing: 0.05em;
+        }
+        
+        .rewards-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem; max-width: 1400px; margin: 0 auto; position: relative; z-index: 10;
+        }
+        
+        .reward-card {
+            background: var(--black); border: 1px solid rgba(255,255,255,0.1);
+            padding: 3rem 2rem; text-align: center; position: relative;
+            overflow: hidden; transition: all 0.4s ease; cursor: pointer;
+        }
+        
+        .reward-card::before {
+            content: ''; position: absolute; top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,107,53,0.1), transparent);
+            transition: left 0.6s ease;
+        }
+        
+        .reward-card:hover::before { left: 100%; }
+        
+        .reward-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--orange);
+            box-shadow: 0 20px 60px rgba(255,107,53,0.2);
+        }
+        
+        .reward-icon {
+            width: 120px; height: 120px; margin: 0 auto 2rem;
+            background-size: contain; background-repeat: no-repeat;
+            background-position: center; filter: grayscale(100%) brightness(0.9);
+            transition: all 0.4s ease;
+        }
+        
+        .reward-card:hover .reward-icon {
+            filter: grayscale(0%) brightness(1);
+            transform: scale(1.1);
+        }
+        
+        .reward-card.trophy .reward-icon {
+            background-image: url('https://github.com/highlevelvnc/rpeventos/raw/main/uploads/rewards.png');
+            background-position: left center;
+        }
+        
+        .reward-card.medal .reward-icon {
+            background-image: url('https://github.com/highlevelvnc/rpeventos/raw/main/uploads/rewards.png');
+            background-position: center center;
+        }
+        
+        .reward-card.shirt .reward-icon {
+            background-image: url('https://github.com/highlevelvnc/rpeventos/raw/main/uploads/rewards.png');
+            background-position: right center;
+        }
+        
+        .reward-title {
+            font-size: 1.75rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.1em; margin-bottom: 1rem;
+        }
+        
+        .reward-desc {
+            font-size: 1rem; line-height: 1.7; opacity: 0.7; margin-bottom: 1.5rem;
+        }
+        
+        .reward-badge {
+            display: inline-block; padding: 0.5rem 1.5rem;
+            background: rgba(255,107,53,0.1); color: var(--orange);
+            font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.15em; border: 1px solid rgba(255,107,53,0.3);
+        }
+        
+        /* FULL REWARDS IMAGE */
+        .rewards-showcase {
+            padding: 8rem 4rem; background: var(--black);
+            text-align: center;
+        }
+        
+        .showcase-image {
+            max-width: 1400px; margin: 0 auto;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 20px 80px rgba(0,0,0,0.5);
+        }
+        
+        .showcase-image img {
+            width: 100%; height: auto; display: block;
+        }
+        
+        .info-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 4rem; padding: 8rem 4rem; background: #0a0a0a;
+        }
+        .info-item { text-align: center; }
+        .info-icon { font-size: 4rem; margin-bottom: 2rem; opacity: 0.8; }
+        .info-title {
+            font-size: 1.5rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.1em; margin-bottom: 1rem;
+        }
+        .info-desc { font-size: 1rem; line-height: 1.6; opacity: 0.6; }
+        
+        .kits-section { padding: 10rem 4rem; background: var(--black); }
+        .kits-header { text-align: center; margin-bottom: 6rem; }
+        .kits-title { font-size: clamp(3rem, 8vw, 6rem); margin-bottom: 2rem; }
+        .kits-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem; max-width: 1200px; margin: 0 auto;
+        }
+        
+        .kit-card {
+            background: var(--gray-dark); border: 1px solid rgba(255,255,255,0.1);
+            padding: 3rem; position: relative; overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .kit-card:hover { transform: translateY(-10px); border-color: var(--orange); }
+        .kit-badge {
+            position: absolute; top: 2rem; right: 2rem; padding: 0.5rem 1rem;
+            background: var(--orange); color: var(--white); font-size: 0.625rem;
+            font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em;
+        }
+        .kit-name { font-size: 2.5rem; font-weight: 700; text-transform: uppercase; margin-bottom: 1rem; }
+        .kit-price { font-size: 4rem; font-weight: 900; margin-bottom: 3rem; line-height: 1; }
+        .kit-features { list-style: none; margin-bottom: 3rem; }
+        .kit-features li {
+            padding: 1rem 0; border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-size: 1rem; display: flex; align-items: center; gap: 1rem;
+        }
+        .kit-features li::before { content: '✓'; font-weight: 700; opacity: 0.5; }
+        
+        .btn-kit {
+            display: block; width: 100%; padding: 1.5rem; background: transparent;
+            color: var(--white); text-decoration: none; text-align: center;
+            font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em;
+            border: 1px solid var(--white); transition: all 0.3s ease;
+        }
+        .btn-kit:hover { background: var(--orange); color: var(--white); border-color: var(--orange); }
+        
+        .countdown-section { padding: 8rem 4rem; text-align: center; background: #0a0a0a; }
+        .countdown-title { font-size: clamp(2rem, 6vw, 4rem); margin-bottom: 4rem; }
+        .countdown-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;
+            max-width: 800px; margin: 0 auto;
+        }
+        .countdown-item { padding: 2rem; background: var(--black); border: 1px solid rgba(255,255,255,0.1); }
+        .countdown-number { font-size: 4rem; font-weight: 900; line-height: 1; margin-bottom: 1rem; color: var(--orange); }
+        .countdown-label {
+            font-size: 0.875rem; text-transform: uppercase;
+            letter-spacing: 0.15em; opacity: 0.5;
+        }
+        
+        .location-section { padding: 10rem 4rem; background: var(--black); }
+        .location-content {
+            max-width: 1200px; margin: 0 auto; display: grid;
+            grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center;
+        }
+        .location-image {
+            width: 100%; height: 500px;
+            background: url('https://github.com/highlevelvnc/rpeventos/raw/main/uploads/mirante.webp') center/cover;
+            border: 1px solid rgba(255,255,255,0.1);
+            filter: grayscale(100%);
+            transition: filter 0.3s ease;
+        }
+        .location-image:hover { filter: grayscale(0%); }
+        .location-text h2 { font-size: clamp(2.5rem, 6vw, 4rem); margin-bottom: 2rem; }
+        .location-text p { font-size: 1.125rem; line-height: 1.8; opacity: 0.8; margin-bottom: 1.5rem; }
+        .location-details { display: flex; flex-direction: column; gap: 1rem; margin-top: 3rem; }
+        .detail-item {
+            display: flex; align-items: center; gap: 1rem; font-size: 1rem;
+            padding: 1rem; background: var(--gray-dark); border: 1px solid rgba(255,255,255,0.1);
+        }
+        .detail-icon { font-size: 1.5rem; }
+        
+        footer {
+            padding: 4rem; background: var(--black);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            text-align: center; font-size: 0.875rem; opacity: 0.5;
+        }
+        
+        @media (max-width: 768px) {
+            header { padding: 1.5rem 2rem; }
+            .scroll-section { padding: 4rem 2rem; }
+            .rewards-section, .kits-section, .countdown-section, .location-section { padding: 4rem 2rem; }
+            .rewards-grid, .kits-grid { grid-template-columns: 1fr; }
+            .countdown-grid { grid-template-columns: repeat(2, 1fr); }
+            .location-content { grid-template-columns: 1fr; gap: 3rem; }
+            .location-image { height: 300px; }
+            .floating-cta { bottom: 1rem; right: 1rem; left: 1rem; }
+            .btn-float { width: 100%; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-cta" id="floatingCta">
+        <a href="#inscricao" class="btn-float">GARANTIR VAGA AGORA</a>
+    </div>
+
+    <header id="header" class="transparent">
+        <div class="logo"><a href="index.html">RP EVENTOS</a></div>
+    </header>
+
+    <section class="hero-full">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <div class="hero-badge">14 MAR 2026 • 19H00</div>
+            <h1 class="display hero-title">CORRIDA<br>DO SIM</h1>
+            <p class="hero-subtitle">Iguaba Grande • Mirante Dona Célia</p>
+        </div>
+    </section>
+
+    <section class="scroll-section dark">
+        <div class="section-content">
+            <div class="section-number">— 01</div>
+            <h2 class="display section-title">31 ANOS<br>DE HISTÓRIA</h2>
+            <p class="section-text">
+                Celebramos três décadas de conquistas, superação e crescimento de Iguaba Grande. 
+                Uma corrida que une passado, presente e futuro em cada passada.
+            </p>
+        </div>
+    </section>
+
+    <!-- REWARDS SECTION -->
+    <section class="rewards-section">
+        <div class="rewards-header">
+            <h2 class="display rewards-title">SUAS CONQUISTAS</h2>
+            <p class="rewards-subtitle">
+                Troféu, Medalha e Camisa Exclusiva para Todos os Finishers
+            </p>
+        </div>
+
+        <div class="rewards-grid">
+            <div class="reward-card trophy">
+                <div class="reward-icon"></div>
+                <h3 class="reward-title">Troféu</h3>
+                <p class="reward-desc">
+                    Troféu exclusivo "Corrida do SIM" celebrando 31 anos de Iguaba Grande. 
+                    Design único com o Mirante Dona Célia em relevo.
+                </p>
+                <div class="reward-badge">Para os Primeiros Colocados</div>
+            </div>
+
+            <div class="reward-card medal">
+                <div class="reward-icon"></div>
+                <h3 class="reward-title">Medalha</h3>
+                <p class="reward-desc">
+                    Medalha comemorativa de 31 anos com cordão rosa premium. 
+                    Arte exclusiva do Mirante e estrelas representando cada ano de história.
+                </p>
+                <div class="reward-badge">Para Todos os Finishers</div>
+            </div>
+
+            <div class="reward-card shirt">
+                <div class="reward-icon"></div>
+                <h3 class="reward-title">Camisa</h3>
+                <p class="reward-desc">
+                    Camisa técnica oficial cor laranja vibrante com estampa exclusiva 
+                    "Corrida do SIM - Iguaba Grande". Tecido respirável de alta performance.
+                </p>
+                <div class="reward-badge">Apenas no Kit Lua</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FULL SHOWCASE -->
+    <section class="rewards-showcase">
+        <div class="showcase-image">
+            <img src="https://github.com/highlevelvnc/rpeventos/raw/main/uploads/rewards.png" alt="Troféu, Medalha e Camisa - Corrida do SIM">
+        </div>
+    </section>
+
+    <section class="scroll-section image" id="parallaxSection">
+        <div class="section-content">
+            <h2 class="display section-title">CORRA<br>A NOITE</h2>
+        </div>
+    </section>
+
+    <section class="location-section">
+        <div class="location-content">
+            <div class="location-image"></div>
+            <div class="location-text">
+                <h2 class="display">MIRANTE<br>DONA CÉLIA</h2>
+                <p>
+                    O Mirante Dona Célia é um dos cartões-postais de Iguaba Grande, oferecendo 
+                    uma vista panorâmica espetacular da Lagoa de Araruama e região.
+                </p>
+                <p>
+                    Durante a Corrida do SIM, os atletas terão a oportunidade de percorrer 
+                    este espaço emblemático sob a luz da lua, criando memórias inesquecíveis.
+                </p>
+                <div class="location-details">
+                    <div class="detail-item">
+                        <span class="detail-icon">📍</span>
+                        <span>Iguaba Grande, Região dos Lagos - RJ</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-icon">🌅</span>
+                        <span>Vista panorâmica da Lagoa de Araruama</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-icon">🌙</span>
+                        <span>Corrida noturna às 19h00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="info-grid">
+        <div class="info-item">
+            <div class="info-icon">🚶</div>
+            <div class="info-title">3km Caminhada</div>
+            <div class="info-desc">Percurso acessível e panorâmico</div>
+        </div>
+        <div class="info-item">
+            <div class="info-icon">🏃</div>
+            <div class="info-title">5km Corrida</div>
+            <div class="info-desc">Desafio ideal para todos os níveis</div>
+        </div>
+        <div class="info-item">
+            <div class="info-icon">⏱️</div>
+            <div class="info-title">Cronometragem</div>
+            <div class="info-desc">Sistema profissional de timing</div>
+        </div>
+        <div class="info-item">
+            <div class="info-icon">📸</div>
+            <div class="info-title">Fotos</div>
+            <div class="info-desc">Cobertura profissional do evento</div>
+        </div>
+    </div>
+
+    <section class="countdown-section">
+        <h2 class="display countdown-title">CONTAGEM REGRESSIVA</h2>
+        <div class="countdown-grid">
+            <div class="countdown-item">
+                <div class="countdown-number" id="days">0</div>
+                <div class="countdown-label">Dias</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="hours">0</div>
+                <div class="countdown-label">Horas</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="minutes">0</div>
+                <div class="countdown-label">Minutos</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="seconds">0</div>
+                <div class="countdown-label">Segundos</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="kits-section" id="inscricao">
+        <div class="kits-header">
+            <h2 class="display kits-title">ESCOLHA<br>SEU KIT</h2>
+            <p style="font-size: 1.125rem; opacity: 0.6; margin-top: 1rem;">
+                Escolha entre 3km de Caminhada ou 5km de Corrida
+            </p>
+        </div>
+
+        <div class="kits-grid">
+            <div class="kit-card">
+                <div class="kit-badge">Mais Completo</div>
+                <h3 class="kit-name">Kit Lua</h3>
+                <div class="kit-price">R$ 109,99</div>
+                <ul class="kit-features">
+                    <li>Camisa oficial exclusiva (laranja)</li>
+                    <li>Chip de cronometragem profissional</li>
+                    <li>Número de peito personalizado</li>
+                    <li>Medalha comemorativa 31 anos</li>
+                    <li>Hidratação durante a prova</li>
+                    <li>Hidratação pós-prova completa</li>
+                    <li>3km Caminhada ou 5km Corrida</li>
+                </ul>
+                <a href="checkout-premium.html" class="btn-kit">Escolher Kit Lua</a>
+            </div>
+
+            <div class="kit-card">
+                <h3 class="kit-name">Kit Estrela</h3>
+                <div class="kit-price">R$ 79,99</div>
+                <ul class="kit-features">
+                    <li>Chip de cronometragem profissional</li>
+                    <li>Número de peito personalizado</li>
+                    <li>Medalha comemorativa 31 anos</li>
+                    <li>3km Caminhada ou 5km Corrida</li>
+                </ul>
+                <a href="checkout-premium.html" class="btn-kit">Escolher Kit Estrela</a>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 4rem; font-size: 0.875rem; opacity: 0.6;">
+            <p>+ Taxa de serviço R$ 5,00 | Desconto de R$ 3,00 para pagamento via PIX</p>
+        </div>
+    </section>
+
+    <section class="scroll-section dark">
+        <div class="section-content">
+            <h2 class="display section-title">PREPARE-SE<br>PARA CORRER</h2>
+            <p class="section-text" style="margin-bottom: 3rem;">
+                Garanta sua vaga agora. Vagas limitadas.<br>
+                Seja parte desta celebração histórica.
+            </p>
+            <a href="#inscricao" class="btn-float" style="position: static; opacity: 1; transform: none; display: inline-block;">
+                INSCREVER-SE AGORA
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 RP Eventos Desportivos e Administração Ltda. Todos os direitos reservados.</p>
+        <p style="margin-top: 0.5rem;">rpeventosdesportivos.com.br</p>
+    </footer>
+
+    <script>
+        // Header transparency
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.classList.remove('transparent');
+            } else {
+                header.classList.add('transparent');
+            }
+        });
+
+        // Floating CTA
+        const floatingCta = document.getElementById('floatingCta');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 800) {
+                floatingCta.classList.add('visible');
+            } else {
+                floatingCta.classList.remove('visible');
+            }
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Countdown
+        function updateCountdown() {
+            const eventDate = new Date('2026-03-14T19:00:00');
+            const now = new Date();
+            const diff = eventDate - now;
+
+            if (diff > 0) {
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('days').textContent = days;
+                document.getElementById('hours').textContent = hours;
+                document.getElementById('minutes').textContent = minutes;
+                document.getElementById('seconds').textContent = seconds;
+            }
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Parallax
+        window.addEventListener('scroll', () => {
+            const parallax = document.querySelector('.scroll-section.image');
+            const scrolled = window.pageYOffset;
+            if (parallax) {
+                parallax.style.backgroundPositionY = scrolled * 0.5 + 'px';
+            }
+        });
+    </script>
+</body>
+</html>
